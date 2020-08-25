@@ -34,7 +34,7 @@ sudo system restart nginx
 ## Benchmark SETUP 
 
 ### sysbench 
-* [sysbench](https://github.com/akopytov/sysbench)
+* [sysbench](https://github.com/akopytov/sysbench) is a scriptable multi-threaded benchmark tool based on LuaJIT.
 
 * Sysbench SETUP 
 ```s 
@@ -59,18 +59,26 @@ db-driver=mysql
 ```
 
 * stuffing test data
-`sysbench --config-file=sbt-config oltp_point_select --tables=32 --table-size=10000 prepare`
+```s
+sysbench --config-file=sbt-config oltp_point_select --tables=32 --table-size=10000 prepare
+```
 
 * running select test
-`sysbench --config-file=sbt-config oltp_point_select --threads=16 --tables=32 --table-size=10000 run`
+```s
+sysbench --config-file=sbt-config oltp_point_select --threads=16 --tables=32 --table-size=10000 run
+```
+
 * Test report is [here](/txt/L2_sbt_select.txt).
 
 * running update-index-field test
-`sysbench --config-file=sbt-config oltp_update_index --threads=16 --tables=32 --table-size=10000 run`
+```s
+sysbench --config-file=sbt-config oltp_update_index --threads=16 --tables=32 --table-size=10000 run
+```
+
 * Test report is [here](/txt/L2_sbt_update_idx.txt).
 
 
-## go-ycsb 
+### go-ycsb 
 * go-ycsb SETUP 
 ```s
 wget https://dl.google.com/go/go1.15.linux-amd64.tar.gz
@@ -83,14 +91,18 @@ make
 ```
 
 * load data
+```s
 ./bin/go-ycsb load mysql -P workloads/workloada -p recordcount=100000 -p mysql.host=127.0.0.1 -p mysql.port=4000 --threads 32
+```
 
 * test
+```s
 ./bin/go-ycsb run mysql -P workloads/workloada -p operationcount=1000000 -p mysql.host=127.0.0.1 -p mysql.port=4000 --threads 64
+```
 
 * Test report is [here](/txt/L2_ycsb_wla.txt).
 
-## go-tpc 
+### go-tpc 
 
 * go-tpc SETUP 
 ```s
@@ -100,14 +112,22 @@ make build
 ```
 
 * TPC-C 
+```s
 ./bin/go-tpc tpcc -H 127.0.0.1 -P 4000 -D tpcc --warehouses 100 prepare
 ./bin/go-tpc tpcc -H 127.0.0.1 -P 4000 -D tpcc --warehouses 100 run
+```
 
 * Test report is [here](/txt/L2_TPC_C.txt).
 
 * TPC-H 
+```s
 ./bin/go-tpc tpch prepare -H 127.0.0.1 -P 4000 -D tpch --sf 2 --analyze
 ./bin/go-tpc tpch run -H 127.0.0.1 -P 4000 -D tpch --sf 2
+```
 
 * Test report is [here](/txt/L2_TPC_H.txt).
+
+## Analysis 
+
+TODO.
 
