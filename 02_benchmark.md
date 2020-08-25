@@ -1,7 +1,7 @@
 # Performance Testing on TiDB v4.0.0
 * GOAL: performance testing via sysbench, go-ycsb, go-tpc ;
 
-## Hardware Configure 
+## Hardware Configuration
 * One Aliyun Cloud ECS, cpu 8cores, mem 32GB;
 * Storage - 200GB SSD ;
 * OS - ubuntu 18.04 ;
@@ -22,7 +22,7 @@ server {
         proxy_redirect off;
     }
 }
-sudo system restart nginx
+sudo systemctl restart nginx
 ```
 
 * Open the URL - http://External-IP/dashboard/
@@ -31,7 +31,7 @@ sudo system restart nginx
 <img align="center" src="/images/02-tidb_dashboard.png">
 
 
-## Benchmark SETUP 
+## Benchmark Setup and Run
 
 ### sysbench 
 * [sysbench](https://github.com/akopytov/sysbench) is a scriptable multi-threaded benchmark tool based on LuaJIT.
@@ -63,14 +63,14 @@ db-driver=mysql
 sysbench --config-file=sbt-config oltp_point_select --tables=32 --table-size=10000 prepare
 ```
 
-* running select test
+#### running select test
 ```s
 sysbench --config-file=sbt-config oltp_point_select --threads=16 --tables=32 --table-size=10000 run
 ```
 
 * Test report is [here](/txt/L2_sbt_select.txt).
 
-* running update-index-field test
+#### running update-index-field test
 ```s
 sysbench --config-file=sbt-config oltp_update_index --threads=16 --tables=32 --table-size=10000 run
 ```
@@ -111,18 +111,18 @@ cd go-tpc
 make build
 ```
 
-* TPC-C 
+#### TPC-C 
 ```s
-./bin/go-tpc tpcc -H 127.0.0.1 -P 4000 -D tpcc --warehouses 100 prepare
-./bin/go-tpc tpcc -H 127.0.0.1 -P 4000 -D tpcc --warehouses 100 run
+./bin/go-tpc tpcc -H 127.0.0.1 -P 4000 -D tpcc --warehouses 10 prepare
+./bin/go-tpc tpcc -H 127.0.0.1 -P 4000 -D tpcc --warehouses 10 run
 ```
 
 * Test report is [here](/txt/L2_TPC_C.txt).
 
-* TPC-H 
+#### TPC-H 
 ```s
-./bin/go-tpc tpch prepare -H 127.0.0.1 -P 4000 -D tpch --sf 2 --analyze
-./bin/go-tpc tpch run -H 127.0.0.1 -P 4000 -D tpch --sf 2
+./bin/go-tpc tpch prepare -H 127.0.0.1 -P 4000 -D tpch2 --sf 1 --analyze
+./bin/go-tpc tpch run -H 127.0.0.1 -P 4000 -D tpch2 --sf 1
 ```
 
 * Test report is [here](/txt/L2_TPC_H.txt).
