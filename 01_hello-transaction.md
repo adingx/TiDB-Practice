@@ -1,8 +1,5 @@
----
-title: TiDB-1 Architecture
-date: 2020-08-16 21:53:25
-tags: tidb
----
+# 01 hello transaction 
+
 
 ## Introduction 
 [TiDB](https://docs.pingcap.com/tidb/stable) is an open-source, distributed, NewSQL database that supports Hybrid Transactional and Analytical Processing (HTAP) workloads. It is MySQL compatible and features horizontal scalability, strong consistency, and high availability. TiDB can be deployed on-premise or in-cloud.
